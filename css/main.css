@@ -11,8 +11,8 @@
     /*--bs-nav-link-color: #8039fd;*/
     --bs-nav-link-hover-color: #5f12e3;
 }
-
-body{
+ 
+html.fonts-loaded body{
     font-family: 'Raleway', sans-serif;
 }
 .electronic-background{
