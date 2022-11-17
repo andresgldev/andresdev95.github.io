@@ -12,7 +12,7 @@
     --bs-nav-link-hover-color: #5f12e3;
 }
  
-html.fonts-loaded body{
+body.fonts-loaded{
     font-family: 'Raleway', sans-serif;
 }
 .electronic-background{
@@ -88,7 +88,11 @@ html.fonts-loaded body{
     }
 }
 
-.material-symbols-outlined {
+.material-symbols-outlined{
+    font-family: unset;
+}
+body.fonts-loaded .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
     display: inline-flex;
     align-items: center;
     justify-content: center;
