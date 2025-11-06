@@ -1,0 +1,521 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Viaje del "Botoncito"</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7FFF7;
+            color: #1A535C;
+        }
+        :root {
+            --color-primary: #FF6B6B;
+            --color-secondary: #4ECDC4;
+            --color-accent: #FFE66D;
+            --color-dark: #1A535C;
+            --color-light: #F7FFF7;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .text-primary { color: var(--color-primary); }
+        .text-secondary { color: var(--color-secondary); }
+        .text-dark { color: var(--color-dark); }
+        .bg-primary { background-color: var(--color-primary); }
+        .bg-secondary { background-color: var(--color-secondary); }
+        .bg-dark { background-color: var(--color-dark); }
+        .bg-light { background-color: var(--color-light); }
+        .bg-accent { background-color: var(--color-accent); }
+
+        .gherkin-code {
+            background-color: #f0f4f8;
+            border-left: 5px solid var(--color-secondary);
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            color: #333;
+        }
+        .gherkin-code .keyword {
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+        .flow-arrow {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--color-secondary);
+            align-self: center;
+            margin: 1rem 0;
+        }
+        .email-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+        .email-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .email-body {
+            padding: 1.5rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+    <header class="sticky top-0 z-50 w-full bg-white shadow-md">
+        <div class="container mx-auto px-6 py-4">
+            <h1 class="text-2xl md:text-3xl font-bold text-dark text-center">De "Un Botoncito" al Documento Técnico-Funcional</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="iceberg" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center text-dark">El Efecto Iceberg</h2>
+
+            <p class="text-xl text-gray-700 text-center max-w-3xl mx-auto mb-8">"Solo agregar un botón" es la frase más peligrosa en el desarrollo. Es la punta visible de un iceberg de complejidad oculta. Nuestro trabajo como analistas es descubrir y documentar todo lo que está bajo el agua.</p>
+
+<div class="max-w-xl mx-auto mb-10">
+                <img src="./botoncito-iceberg.png">
+            </div>
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8">
+                <h3 class="text-2xl font-semibold text-center mb-4">Petición vs. Complejidad Real</h3>
+                <p class="text-gray-600 text-center mb-6">Un gráfico de dona es perfecto para ilustrar la proporción entre lo que el usuario pide (una pequeña fracción) y el trabajo real de análisis, seguridad, rendimiento y reglas de negocio que implica.</p>
+                <div class="chart-container">
+                    <canvas id="icebergChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="request" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center text-dark">La Solicitud (La Trampa)</h2>
+            <p class="text-xl text-gray-700 text-center max-w-3xl mx-auto mb-8">Todo comienza con una solicitud informal que parece simple. El error es tomarla al pie de la letra. La oportunidad es verla como el inicio de una investigación.</p>
+            
+            <div class="max-w-2xl mx-auto">
+                <div class="email-card">
+                    <div class="email-header">
+                        <p class="font-semibold text-dark">De: <span class="font-normal text-gray-700">Gerente de Ventas</span></p>
+                        <p class="font-semibold text-dark">Para: <span class="font-normal text-gray-700">Equipo de Desarrollo</span></p>
+                        <p class="font-semibold text-dark">Asunto: <span class="font-normal text-gray-700">Pequeño cambio</span></p>
+                    </div>
+                    <div class="email-body text-gray-800">
+                        <p>¡Hola equipo!</p>
+                        <p class="mt-4">¿Podemos agregar un botoncito en la pantalla de clientes que diga 'Exportar a Excel'? Debería ser rápido.</p>
+                        <p class="mt-4">¡Gracias!</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow">
+                        <h4 class="font-bold">Reacción Junior</h4>
+                        <p>"Claro, eso es 1 hora de trabajo." (¡ERROR!)</p>
+                    </div>
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg shadow">
+                        <h4 class="font-bold">Reacción del Analista</h4>
+                        <p>"Interesante. Esto es una solución propuesta. Necesito hacer preguntas."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="elicitation" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center text-dark">Fase 1: Elicitación (Las Preguntas Clave)</h2>
+            <p class="text-xl text-gray-700 text-center max-w-3xl mx-auto mb-8">Usamos la solicitud del "botón" para iniciar el proceso de descubrimiento. El objetivo es traducir la *solución* propuesta ("un botón") a la *necesidad* real ("necesito los datos para...").</p>
+            
+            <div class="flex flex-col items-center">
+                <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-lg text-center">
+                    <h3 class="text-xl font-semibold text-primary">SOLICITUD INICIAL</h3>
+                    <p class="text-2xl font-bold text-dark">"Quiero un botón de Exportar"</p>
+                </div>
+                
+                <div class="flow-arrow">↓</div>
+                
+                <div class="bg-dark text-white rounded-lg shadow-xl p-6 w-full max-w-lg text-center">
+                    <h3 class="text-xl font-semibold text-accent">EL ANALISTA PREGUNTA</h3>
+                    <p class="text-lg">"Interesante... hablemos de eso."</p>
+                </div>
+                
+                <div class="flow-arrow">↓</div>
+
+                <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-5 gap-4 text-center">
+                    <div class="bg-white rounded-lg shadow-lg p-4">
+                        <h4 class="text-lg font-bold text-secondary">1. ¿PARA QUÉ?</h4>
+                        <p class="text-sm text-gray-700">¿Qué hace con ese Excel? ¿El sistema ya tiene esa función?</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-4">
+                        <h4 class="text-lg font-bold text-secondary">2. ¿QUIÉN?</h4>
+                        <p class="text-sm text-gray-700">¿Todos lo ven? ¿Solo gerentes? ¿Qué pasa si un vendedor lo presiona?</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-4">
+                        <h4 class="text-lg font-bold text-secondary">3. ¿QUÉ?</h4>
+                        <p class="text-sm text-gray-700">¿Qué datos exactos? ¿Todas las columnas? ¿Datos de otras tablas?</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-4">
+                        <h4 class="text-lg font-bold text-secondary">4. ¿CUÁNDO?</h4>
+                        <p class="text-sm text-gray-700">¿Es instantáneo? ¿Qué pasa si hay 1 millón de registros?</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-4">
+                        <h4 class="text-lg font-bold text-secondary">5. ¿CÓMO?</h4>
+                        <p class="text-sm text-gray-700">¿CSV o XLSX? ¿Nombre del archivo? ¿Debe estar siempre activo?</p>
+                    </div>
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <div class="bg-green-100 border-green-500 border-l-4 rounded-lg shadow-xl p-6 w-full max-w-lg text-center">
+                    <h3 class="text-xl font-semibold text-green-800">NECESIDAD REAL DESCUBIERTA</h3>
+                    <p class="text-lg font-bold text-dark">"Necesito un reporte seguro y eficiente de clientes activos para mi análisis trimestral."</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="analysis" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center text-dark">Fase 2: Análisis (Clasificando el Botón)</h2>
+            <p class="text-xl text-gray-700 text-center max-w-3xl mx-auto mb-8">Las respuestas se transforman en requisitos formales. Un "botón" se descompone en múltiples ítems de trabajo, cada uno con una categoría clara.</p>
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8">
+                <h3 class="text-2xl font-semibold text-center mb-4">Descomposición de 'REQ-102: Botón Exportar'</h3>
+                <p class="text-gray-600 text-center mb-6">Este gráfico de barras apiladas muestra cómo una sola solicitud (el "botón") se descompone en varios tipos de requisitos. Cada tipo aborda una preocupación diferente: la función, la calidad y la regla.</p>
+                <div class="chart-container h-64 md:h-72">
+                    <canvas id="analysisChart"></canvas>
+                </div>
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="border-t-4 border-primary pt-4">
+                        <h4 class="text-xl font-bold text-primary">Requisitos Funcionales (RF)</h4>
+                        <p class="text-gray-700">El *qué* hace el sistema. <br/>Ej: "El sistema *debe permitir* exportar a XLSX."</p>
+                    </div>
+                    <div class="border-t-4 border-secondary pt-4">
+                        <h4 class="text-xl font-bold text-secondary">Requisitos No Funcionales (RNF)</h4>
+                        <p class="text-gray-700">El *cómo* lo hace (calidad). <br/>Ej: "El botón *solo debe ser visible* para el rol 'Gerente'." (Seguridad) <br/>Ej: "La exportación *debe completarse* en &lt; 5 seg." (Performance)</p>
+                    </div>
+                    <div class="border-t-4 border-accent pt-4">
+                        <h4 class="text-xl font-bold text-dark">Reglas de Negocio (BR)</h4>
+                        <p class="text-gray-700">La lógica del negocio. <br/>Ej: "El botón *debe estar deshabilitado* si la grilla está vacía."</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="dtf" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center text-dark">Fase 3: El Documento Técnico-Funcional (DTF)</h2>
+            <p class="text-xl text-gray-700 text-center max-w-3xl mx-auto mb-8">Todos estos requisitos se formalizan en el DTF. Este documento es el "contrato" entre el negocio y los desarrolladores. Es la fuente de verdad.</p>
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8 max-w-3xl mx-auto">
+                <h3 class="text-2xl font-semibold text-center mb-6">Anatomía de un DTF (para REQ-102)</h3>
+                <ol class="list-decimal list-inside space-y-4">
+                    <li class="text-lg text-gray-800"><span class="font-semibold">ID del Requerimiento:</span> `REQ-102: Exportación de Clientes`</li>
+                    <li class="text-lg text-gray-800"><span class="font-semibold">Módulo:</span> `Gestión de Clientes`</li>
+                    <li class="text-lg text-gray-800"><span class="font-semibold">Descripción General:</span> El "Para qué" (la necesidad de negocio).</li>
+                    <li class="text-lg text-gray-800"><span class="font-semibold">Requisitos Funcionales (RF):</span> La lista de "El sistema debe...".</li>
+                    <li class="text-lg text-gray-800"><span class="font-semibold">Requisitos No Funcionales (RNF):</span> Seguridad, Performance, etc.</li>
+                    <li class="text-lg text-gray-800"><span class="font-semibold">Reglas de Negocio (BR):</span> Lógicas y restricciones.</li>
+                    <li class="text-lg text-gray-800"><span class="font-semibold">Diseño de Interfaz (Mockup):</span> El "dónde" va el botón (¡aquí está!).</li>
+                    <li class="text-lg text-gray-800 font-bold text-primary"><span class="font-bold">Criterios de Aceptación (CA):</span> ¡La parte más importante!</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="acceptance" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center text-dark">Zoom-In: Criterios de Aceptación (CA)</h2>
+            <p class="text-xl text-gray-700 text-center max-w-3xl mx-auto mb-8">Si no se puede probar, no está terminado. Los CAs son la lista de verificación (en formato Gherkin) que QA usará para validar que el "botón" funciona como todos acordaron.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <h4 class="text-xl font-semibold p-4 bg-gray-50 text-dark">CA-01: Exportación exitosa</h4>
+                    <div class="p-4">
+                        <pre class="gherkin-code"><span class="keyword">Dado</span> que soy un 'Gerente'
+<span class="keyword">Y</span> hay 100 registros en la grilla
+<span class="keyword">Cuando</span> hago clic en 'Exportar'
+<span class="keyword">Entonces</span> el sistema descarga un archivo XLSX.</pre>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <h4 class="text-xl font-semibold p-4 bg-gray-50 text-dark">CA-02: Seguridad de Rol</h4>
+                    <div class="p-4">
+                        <pre class="gherkin-code"><span class="keyword">Dado</span> que soy un 'Vendedor'
+<span class="keyword">Cuando</span> miro la pantalla de clientes
+<span class="keyword">Entonces</span> el botón 'Exportar' NO es visible.</pre>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <h4 class="text-xl font-semibold p-4 bg-gray-50 text-dark">CA-03: Regla de Negocio</h4>
+                    <div class="p-4">
+                        <pre class="gherkin-code"><span class="keyword">Dado</span> que soy un 'Gerente'
+<span class="keyword">Y</span> la grilla de clientes está vacía
+<span class="keyword">Cuando</span> miro la pantalla
+<span class="keyword">Entonces</span> el botón 'Exportar' está visible pero deshabilitado.</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tools" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center text-dark">Herramientas para Gestionar el "Botón"</h2>
+            <p class="text-xl text-gray-700 text-center max-w-3xl mx-auto mb-8">Este proceso no se gestiona en emails. Un analista funcional utiliza un ecosistema de herramientas conectadas para diseñar, documentar, gestionar y trazar el trabajo.</p>
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8">
+                <h3 class="text-2xl font-semibold text-center mb-4">El Ecosistema de Herramientas del Analista</h3>
+                <p class="text-gray-600 text-center mb-6">Un gráfico de barras horizontales nos ayuda a visualizar las distintas categorías de herramientas que soportan el ciclo de vida del requisito, desde el concepto visual hasta la tarea de desarrollo y su prueba.</p>
+                <div class="chart-container h-96">
+                    <canvas id="toolsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="conclusion" class="mb-20">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center text-dark">Conclusión: El Valor del Proceso</h2>
+            <p class="text-xl text-gray-700 text-center max-w-3xl mx-auto mb-8">El "botoncito" original era simple, pero la *funcionalidad* era compleja. El análisis de requisitos es el proceso que garantiza que la entrega final tenga valor real para el negocio.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="bg-white rounded-lg shadow-2xl p-8 border-t-8 border-primary">
+                    <h3 class="text-3xl font-bold text-dark text-center mb-6">Lo que pidió el cliente</h3>
+                    <div class="text-center">
+                        <span class="text-8xl" role="img" aria-label="botón">🔘</span>
+                        <p class="text-2xl font-semibold text-gray-700 mt-4">"Un botoncito"</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-2xl p-8 border-t-8 border-secondary">
+                    <h3 class="text-3xl font-bold text-dark text-center mb-6">Lo que la empresa entregó</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start text-xl text-gray-800">
+                            <span class="text-2xl mr-3 text-green-500">✅</span>
+                            <div><span class="font-semibold">Una funcionalidad de exportación</span> (RF)</div>
+                        </li>
+                        <li class="flex items-start text-xl text-gray-800">
+                            <span class="text-2xl mr-3 text-green-500">✅</span>
+                            <div><span class="font-semibold">Segura y con roles</span> (RNF de Seguridad)</div>
+                        </li>
+                        <li class="flex items-start text-xl text-gray-800">
+                            <span class="text-2xl mr-3 text-green-500">✅</span>
+                            <div><span class="font-semibold">Eficiente y escalable</span> (RNF de Performance)</div>
+                        </li>
+                        <li class="flex items-start text-xl text-gray-800">
+                            <span class="text-2xl mr-3 text-green-500">✅</span>
+                            <div><span class="font-semibold">Documentada y verificable</span> (DTF + CAs)</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <p class="text-2xl text-gray-800 text-center font-semibold max-w-3xl mx-auto mt-12">Un "botoncito" no es una tarea. Es el inicio de una conversación. El Documento Técnico-Funcional es el *resultado* de esa conversación.</p>
+        </section>
+
+    </main>
+
+    <footer class="bg-dark text-light p-6 text-center">
+        <p>© 2025 Infografía de Ingeniería de Requisitos. Prohibido SVG y Mermaid JS.</p>
+    </footer>
+
+    <script>
+        window.onload = function () {
+
+            const chartColors = {
+                primary: 'rgba(255, 107, 107, 0.8)',
+                primaryHover: 'rgba(255, 107, 107, 1)',
+                secondary: 'rgba(78, 205, 196, 0.8)',
+                secondaryHover: 'rgba(78, 205, 196, 1)',
+                accent: 'rgba(255, 230, 109, 0.8)',
+                accentHover: 'rgba(255, 230, 109, 1)',
+                dark: 'rgba(26, 83, 92, 0.8)',
+                darkHover: 'rgba(26, 83, 92, 1)',
+            };
+
+            const wrapLabel = (str) => {
+                const words = str.split(' ');
+                let lines = [];
+                let currentLine = '';
+                if (str.length <= 16) {
+                    return str;
+                }
+                words.forEach(word => {
+                    if ((currentLine + word).length > 16 && currentLine.length > 0) {
+                        lines.push(currentLine.trim());
+                        currentLine = word + ' ';
+                    } else {
+                        currentLine += word + ' ';
+                    }
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            };
+            
+            const sharedTooltipOptions = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            };
+
+            const icebergCtx = document.getElementById('icebergChart');
+            if (icebergCtx) {
+                new Chart(icebergCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Petición Visible ("El Botón")', 'Complejidad Oculta (Riesgos, Reglas, RNF, Seguridad..._'],
+                        datasets: [{
+                            label: 'Proporción de Trabajo',
+                            data: [5, 95],
+                            backgroundColor: [chartColors.secondary, chartColors.primary],
+                            hoverBackgroundColor: [chartColors.secondaryHover, chartColors.primaryHover],
+                            borderColor: '#ffffff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        ...sharedTooltipOptions,
+                        plugins: {
+                            ...sharedTooltipOptions.plugins,
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    font: { size: 14 }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const analysisCtx = document.getElementById('analysisChart');
+            if (analysisCtx) {
+                new Chart(analysisCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['REQ-102: "El Botoncito"'],
+                        datasets: [
+                            {
+                                label: 'Requisitos Funcionales (RF)',
+                                data: [2],
+                                backgroundColor: chartColors.primary,
+                                hoverBackgroundColor: chartColors.primaryHover
+                            },
+                            {
+                                label: 'Requisitos No Funcionales (RNF)',
+                                data: [3],
+                                backgroundColor: chartColors.secondary,
+                                hoverBackgroundColor: chartColors.secondaryHover
+                            },
+                            {
+                                label: 'Reglas de Negocio (BR)',
+                                data: [1],
+                                backgroundColor: chartColors.accent,
+                                hoverBackgroundColor: chartColors.accentHover
+                            }
+                        ]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                stacked: true,
+                                title: {
+                                    display: true,
+                                    text: 'Cantidad de Requisitos Formales'
+                                }
+                            },
+                            y: {
+                                stacked: true
+                            }
+                        },
+                        ...sharedTooltipOptions,
+                        plugins: {
+                            ...sharedTooltipOptions.plugins,
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+
+            const toolsCtx = document.getElementById('toolsChart');
+            if (toolsCtx) {
+                const toolLabels = [
+                    'Figma / Balsamiq (Diseño de Interfaz)',
+                    'Confluence / Notion (Documentación DTF)',
+                    'JIRA / Azure DevOps (Gestión de Tareas)',
+                    'RTM / TestRail (Trazabilidad y Pruebas)'
+                ];
+                new Chart(toolsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: toolLabels.map(wrapLabel),
+                        datasets: [{
+                            label: 'Áreas del Ecosistema de Herramientas',
+                            data: [10, 10, 10, 10],
+                            backgroundColor: [
+                                chartColors.primary,
+                                chartColors.secondary,
+                                chartColors.accent,
+                                chartColors.dark
+                            ],
+                            hoverBackgroundColor: [
+                                chartColors.primaryHover,
+                                chartColors.secondaryHover,
+                                chartColors.accentHover,
+                                chartColors.darkHover
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        ...sharedTooltipOptions,
+                        plugins: {
+                            ...sharedTooltipOptions.plugins,
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                display: false
+                            },
+                            y: {
+                                ticks: {
+                                    font: {
+                                        size: 14
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        };
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'999ec4d4890bc6e7',t:'MTc2MjM3MTA1OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"d70a3be32ecf490981d0b066157193c6","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
